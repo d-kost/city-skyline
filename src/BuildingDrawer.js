@@ -1,8 +1,8 @@
 import { ColorHelper } from './ColorHelper';
 
 export class BuildingDrawer {
-  minWidth = 50;
-  offset = { x: 0, y: 50 };
+  minWidth = 20;
+  offset = { x: 0, y: 150 };
   color;
 
   constructor(context, buildingGenerator) {
@@ -49,7 +49,8 @@ export class BuildingDrawer {
     let buildingCoords;
 
     while (offsetX < window.innerWidth) {
-      buildingCoords = this.buildingGenerator.generateBuilding();
+      const sideCount = Math.floor(Math.random() * 2 + 3);
+      buildingCoords = this.buildingGenerator.generateBuilding(sideCount);
 
       offsetX += buildingCoords[buildingCoords.length - 1][0];
       offsetX += this.getRandomOffsetX(); //TODO: it has a bug
