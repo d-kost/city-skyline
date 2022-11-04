@@ -1,10 +1,18 @@
+import { ColorHelper } from './ColorHelper';
+
 export class BuildingDrawer {
   minWidth = 50;
   offsetY = 0;
+  color;
 
   constructor(context, buildingGenerator) {
     this.ctx = context;
     this.buildingGenerator = buildingGenerator;
+    this.colorHelper = new ColorHelper();
+  }
+
+  setInitialColor(color) {
+    this.color = color;
   }
 
   setOffsetY(offsetY) {
@@ -33,7 +41,7 @@ export class BuildingDrawer {
     return result;
   }
 
-  drawBuildings() {
+  drawBuildingsRow() {
     this.ctx.beginPath();
     let offsetX = 0;
     let step = 0;
@@ -59,7 +67,15 @@ export class BuildingDrawer {
     this.ctx.stroke();
     this.ctx.closePath();
 
-    this.ctx.fillStyle = `hsl(231, 44%, 74%)`;
+    this.ctx.fillStyle = this.colorHelper.arrToHsl(this.color);
     this.ctx.fill();
+  }
+
+  drawCity() {
+    for (let i = 0; i < 5; i++) {
+      this.setOffsetY(i * 20);
+      this.drawBuildingsRow();
+      this.color = this.colorHelper.darken(...this.color);
+    }
   }
 }
