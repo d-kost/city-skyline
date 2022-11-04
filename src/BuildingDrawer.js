@@ -1,9 +1,14 @@
 export class BuildingDrawer {
   minWidth = 50;
+  offsetY = 0;
 
   constructor(context, buildingGenerator) {
     this.ctx = context;
     this.buildingGenerator = buildingGenerator;
+  }
+
+  setOffsetY(offsetY) {
+    this.offsetY = offsetY;
   }
 
   setMinWidth(minWidth) {
@@ -20,29 +25,32 @@ export class BuildingDrawer {
     });
   }
 
-  addOffsetXToCoords(buildingCoords, offset) {
+  addOffsetToCoords(buildingCoords, offset) {
     const result = [];
     buildingCoords.forEach(([x, y]) => {
-      result.push([x + offset, y]);
+      result.push([x + offset.x, y + offset.y]);
     });
     return result;
   }
 
   drawBuildings() {
     this.ctx.beginPath();
-    let offset = 0;
+    let offsetX = 0;
     let step = 0;
 
-    let buildingCoords = this.buildingGenerator.generateBuilding();
+    let buildingCoords;
 
-    while (offset < window.innerWidth) {
+    while (offsetX < window.innerWidth) {
       buildingCoords = this.buildingGenerator.generateBuilding();
 
-      offset += buildingCoords[buildingCoords.length - 1][0];
-      offset += this.getRandomOffsetX(); //TODO: it has a bug
-      offset = step === 0 ? 0 : offset;
+      offsetX += buildingCoords[buildingCoords.length - 1][0];
+      offsetX += this.getRandomOffsetX(); //TODO: it has a bug
+      offsetX = step === 0 ? 0 : offsetX;
 
-      buildingCoords = this.addOffsetXToCoords(buildingCoords, offset);
+      buildingCoords = this.addOffsetToCoords(buildingCoords, {
+        x: offsetX,
+        y: this.offsetY,
+      });
       this.ctx.lineTo(...buildingCoords);
       this.drawOneBuilding(buildingCoords);
       step++;

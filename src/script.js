@@ -10,3 +10,5 @@ const startPos = [10, 100];
 const buildingGenerator = new BuildingGenerator(...startPos);
 const buildingDrawer = new BuildingDrawer(ctx, buildingGenerator);
 buildingDrawer.drawBuildings();
+buildingDrawer.setOffsetY(20);
+buildingDrawer.drawBuildings();
