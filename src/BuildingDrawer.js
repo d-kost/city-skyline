@@ -2,7 +2,7 @@ import { ColorHelper } from './ColorHelper';
 
 export class BuildingDrawer {
   minWidth = 50;
-  offsetY = 0;
+  offset = { x: 0, y: 50 };
   color;
 
   constructor(context, buildingGenerator) {
@@ -15,8 +15,8 @@ export class BuildingDrawer {
     this.color = color;
   }
 
-  setOffsetY(offsetY) {
-    this.offsetY = offsetY;
+  setOffset(offset) {
+    this.offset = offset;
   }
 
   setMinWidth(minWidth) {
@@ -56,14 +56,15 @@ export class BuildingDrawer {
       offsetX = step === 0 ? 0 : offsetX;
 
       buildingCoords = this.addOffsetToCoords(buildingCoords, {
-        x: offsetX,
-        y: this.offsetY,
+        x: this.offset.x + offsetX,
+        y: this.offset.y,
       });
       this.ctx.lineTo(...buildingCoords);
       this.drawOneBuilding(buildingCoords);
       step++;
     }
 
+    this.ctx.strokeStyle = 'transparent';
     this.ctx.stroke();
     this.ctx.closePath();
 
@@ -73,7 +74,8 @@ export class BuildingDrawer {
 
   drawCity() {
     for (let i = 0; i < 5; i++) {
-      this.setOffsetY(i * 20);
+      const offsetX = Math.floor(Math.random() * 100 - 200);
+      this.setOffset({ x: offsetX, y: this.offset.y + 20 });
       this.drawBuildingsRow();
       this.color = this.colorHelper.darken(...this.color);
     }
