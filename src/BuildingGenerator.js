@@ -6,15 +6,21 @@ import {
 
 export class BuildingGenerator {
   minWidth = 20;
+  height = 100;
 
   constructor(startX, startY) {
     this.startX = startX;
     this.startY = startY;
   }
 
+  setHeight(height) {
+    this.height = height;
+  }
+
   generateBuilding(sideCount) {
     CommonBuilding.defineStartPos(this.startX, this.startY);
     CommonBuilding.defineMinWidth(this.minWidth);
+    CommonBuilding.setHeight(this.height);
 
     switch (sideCount) {
       case 3:

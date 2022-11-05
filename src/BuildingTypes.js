@@ -1,6 +1,7 @@
 export class CommonBuilding {
   static sideCount = 3;
   static minWidth;
+  static height;
   static startX;
   static startY;
 
@@ -11,6 +12,10 @@ export class CommonBuilding {
 
   static defineMinWidth(minWidth) {
     this.minWidth = minWidth;
+  }
+
+  static setHeight(height) {
+    this.height = height;
   }
 
   static getNextCoordinates(i, x0, y0) {
@@ -32,8 +37,8 @@ export class Building3Sides extends CommonBuilding {
   static sideCount = 3;
 
   static getNextCoordinates(i, x0, y0) {
-    let x = Math.floor(Math.random() * 70 + this.minWidth + x0);
-    let y = i === this.sideCount - 1 ? this.startY : Math.floor(Math.random() * 50);
+    let x = Math.floor(Math.random() * 30 + this.minWidth + x0);
+    let y = i === this.sideCount - 1 ? this.startY : -Math.floor(Math.random() * 30 + this.height - 30);
 
     if (i === 0 || i === this.sideCount - 1) {
       x = x0;
@@ -52,14 +57,11 @@ export class Building4Sides extends CommonBuilding {
       x = x0 + 20;
     }
 
-    let y = Math.floor(Math.random() * 50);
-
-    if (i === 1) {
-      y = y0 - 60;
-    }
+    //TODO: magic numbers
+    let y = i === 1 ? y0 - 20 : -Math.floor(Math.random() * 30 + this.height - 30);
 
     if (i === 2) {
-      y = y0 + 60;
+      y = y0;
     }
 
     if (i === this.sideCount - 1) {

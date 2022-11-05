@@ -23,8 +23,8 @@ export class BuildingDrawer {
     this.minWidth = minWidth;
   }
 
-  getRandomOffsetX() {
-    return Math.floor(Math.random() * this.minWidth + 30);
+  getRandomOffsetX(step) {
+    return Math.floor(Math.random() * this.minWidth + step * 30);
   }
 
   drawOneBuilding(coords) {
@@ -41,10 +41,9 @@ export class BuildingDrawer {
     return result;
   }
 
-  drawBuildingsRow() {
+  drawBuildingsRow(rowIndex) {
     this.ctx.beginPath();
     let offsetX = 0;
-    let step = 0;
 
     let buildingCoords;
 
@@ -53,8 +52,7 @@ export class BuildingDrawer {
       buildingCoords = this.buildingGenerator.generateBuilding(sideCount);
 
       offsetX += buildingCoords[buildingCoords.length - 1][0];
-      offsetX += this.getRandomOffsetX(); //TODO: it has a bug
-      offsetX = step === 0 ? 0 : offsetX;
+      offsetX += this.getRandomOffsetX(rowIndex);
 
       buildingCoords = this.addOffsetToCoords(buildingCoords, {
         x: this.offset.x + offsetX,
@@ -62,7 +60,6 @@ export class BuildingDrawer {
       });
       this.ctx.lineTo(...buildingCoords);
       this.drawOneBuilding(buildingCoords);
-      step++;
     }
 
     this.ctx.strokeStyle = 'transparent';
@@ -74,10 +71,11 @@ export class BuildingDrawer {
   }
 
   drawCity() {
-    for (let i = 0; i < 5; i++) {
+    for (let i = 9; i >= 0; i--) {
+      this.buildingGenerator.setHeight(Math.floor(Math.random() * 12 * i + 30));
       const offsetX = Math.floor(Math.random() * 100 - 200);
-      this.setOffset({ x: offsetX, y: this.offset.y + 20 });
-      this.drawBuildingsRow();
+      this.setOffset({ x: offsetX, y: this.offset.y + 5 });
+      this.drawBuildingsRow(i);
       this.color = this.colorHelper.darken(...this.color);
     }
   }

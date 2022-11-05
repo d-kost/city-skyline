@@ -1,7 +1,7 @@
 export class ColorHelper {
 
   darken(h, s, l) {
-    return [h, Math.ceil(s * 1.2), Math.ceil(l * 0.8)];
+    return [h, Math.ceil(s * 1.1), Math.ceil(l * 0.9)];
   };
   
   arrToHsl(arr) {
