@@ -75,17 +75,36 @@ export class Building4Sides extends CommonBuilding {
   }
 }
 
-export class Building6Sides extends CommonBuilding {
-  static sideCount = 6;
+export class Building5Sides extends CommonBuilding {
+  static sideCount = 5;
 
   static getNextCoordinates(i, x0, y0) {
-    let y;
-    if (i < 3) {
-      y = i % 2 === 1 ? y0 : y0 - this.height;
-    } else {
-      y = i % 2 === 0 ? y0 : y0 + this.height;
+    let x = Math.floor(Math.random() * 30 + this.minWidth + x0);
+    let y = i === this.sideCount - 1 ? this.startY : -Math.floor(Math.random() * 30 + this.height - 30);
+
+    if (i % 2 === 0) {
+      x = x0;
     }
-    let x = x0 + 50;
+    if (i % 2 === 1) {
+      y = y0;
+    }
+    return [x, y];
+  }
+}
+
+export class Building3SidesWide extends CommonBuilding {
+  static sideCount = 3;
+
+  static getNextCoordinates(i, x0, y0) {
+    let x = Math.floor(Math.random() * 30 + 150 + x0);
+    let y = i === this.sideCount - 1 ? this.startY : y0;
+    if (i === 0) {
+      y = -Math.floor(Math.random() * 30 + this.height - 60);
+    }
+
+    if (i === 0 || i === this.sideCount - 1) {
+      x = x0;
+    }
     return [x, y];
   }
 }

@@ -1,7 +1,8 @@
 import {
   Building3Sides,
+  Building3SidesWide,
   Building4Sides,
-  Building6Sides,
+  Building5Sides,
   Building7Sides,
   CommonBuilding,
 } from './BuildingTypes';
@@ -29,8 +30,10 @@ export class BuildingGenerator {
         return Building3Sides.generateBuilding();
       case 4:
         return Building4Sides.generateBuilding();
+      case 5:
+        return Building5Sides.generateBuilding();
       case 6:
-        return Building6Sides.generateBuilding();
+        return Building3SidesWide.generateBuilding();
       case 7:
         return Building7Sides.generateBuilding();
       default:

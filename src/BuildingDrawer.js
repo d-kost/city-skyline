@@ -2,7 +2,7 @@ import { ColorHelper } from './ColorHelper';
 
 export class BuildingDrawer {
   minWidth = 20;
-  offset = { x: 0, y: 150 };
+  offset = { x: 0, y: 250 };
   rowCount = 10;
   color;
 
@@ -44,7 +44,7 @@ export class BuildingDrawer {
 
   getSideCount(rowIndex) {
     if (rowIndex > this.rowCount / 3) {
-      return Math.floor(Math.random() * 2 + 3); // [3; 4]
+      return Math.floor(Math.random() * 3 + 3); // [3; 5]
     }
     return Math.floor(Math.random() * 5 + 3); // [3; 7]
   }
