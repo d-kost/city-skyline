@@ -74,3 +74,31 @@ export class Building4Sides extends CommonBuilding {
     return [x, y];
   }
 }
+
+export class Building6Sides extends CommonBuilding {
+  static sideCount = 6;
+
+  static getNextCoordinates(i, x0, y0) {
+    let y;
+    if (i < 3) {
+      y = i % 2 === 1 ? y0 : y0 - this.height;
+    } else {
+      y = i % 2 === 0 ? y0 : y0 + this.height;
+    }
+    let x = x0 + 50;
+    return [x, y];
+  }
+}
+
+export class Building7Sides extends CommonBuilding {
+  static sideCount = 7;
+
+  static getNextCoordinates(i, x0, y0) {
+    let y = i < 3 ? y0 - this.height : y0 + this.height;
+    if (i % 2 === 1) {
+      y = y0;
+    }
+    let x = x0 + 30;
+    return [x, y];
+  }
+}

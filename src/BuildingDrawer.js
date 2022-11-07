@@ -3,6 +3,7 @@ import { ColorHelper } from './ColorHelper';
 export class BuildingDrawer {
   minWidth = 20;
   offset = { x: 0, y: 150 };
+  rowCount = 10;
   color;
 
   constructor(context, buildingGenerator) {
@@ -41,6 +42,13 @@ export class BuildingDrawer {
     return result;
   }
 
+  getSideCount(rowIndex) {
+    if (rowIndex > this.rowCount / 3) {
+      return Math.floor(Math.random() * 2 + 3); // [3; 4]
+    }
+    return Math.floor(Math.random() * 5 + 3); // [3; 7]
+  }
+
   drawBuildingsRow(rowIndex) {
     this.ctx.beginPath();
     let offsetX = 0;
@@ -48,16 +56,16 @@ export class BuildingDrawer {
     let buildingCoords;
 
     while (offsetX < window.innerWidth) {
-      const sideCount = Math.floor(Math.random() * 2 + 3);
+      const sideCount = this.getSideCount(rowIndex);
       buildingCoords = this.buildingGenerator.generateBuilding(sideCount);
 
-      offsetX += buildingCoords[buildingCoords.length - 1][0];
       offsetX += this.getRandomOffsetX(rowIndex);
-
       buildingCoords = this.addOffsetToCoords(buildingCoords, {
         x: this.offset.x + offsetX,
         y: this.offset.y,
       });
+      offsetX += buildingCoords[buildingCoords.length - 1][0] - buildingCoords[0][0];
+
       this.ctx.lineTo(...buildingCoords);
       this.drawOneBuilding(buildingCoords);
     }
@@ -71,7 +79,7 @@ export class BuildingDrawer {
   }
 
   drawCity() {
-    for (let i = 9; i >= 0; i--) {
+    for (let i = this.rowCount - 1; i >= 0; i--) {
       this.buildingGenerator.setHeight(Math.floor(Math.random() * 12 * i + 30));
       const offsetX = Math.floor(Math.random() * 100 - 200);
       this.setOffset({ x: offsetX, y: this.offset.y + 5 });
