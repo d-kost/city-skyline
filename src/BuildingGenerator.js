@@ -3,7 +3,7 @@ import {
   Building3SidesWide,
   Building4Sides,
   Building5Sides,
-  Building7Sides,
+  Building5SidesShort,
   CommonBuilding,
 } from './BuildingTypes';
 
@@ -20,12 +20,12 @@ export class BuildingGenerator {
     this.height = height;
   }
 
-  generateBuilding(sideCount) {
+  generateBuilding(type) {
     CommonBuilding.defineStartPos(this.startX, this.startY);
     CommonBuilding.defineMinWidth(this.minWidth);
     CommonBuilding.setHeight(this.height);
 
-    switch (sideCount) {
+    switch (type) {
       case 3:
         return Building3Sides.generateBuilding();
       case 4:
@@ -35,7 +35,7 @@ export class BuildingGenerator {
       case 6:
         return Building3SidesWide.generateBuilding();
       case 7:
-        return Building7Sides.generateBuilding();
+        return Building5SidesShort.generateBuilding();
       default:
         return Building4Sides.generateBuilding();
     }

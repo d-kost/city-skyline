@@ -28,10 +28,50 @@ export class BuildingDrawer {
     return Math.floor(Math.random() * this.minWidth + step * 30);
   }
 
-  drawOneBuilding(coords) {
+  getBuildingParts(coords) {
+    const frontSide = coords.map(([x, y]) => [x - 10, y + 5]);
+    const asides = frontSide.map(([x, y], i) => {
+      return [
+        [x, y],
+        coords[i],
+        coords[i + 1] ? coords[i + 1] : coords[0],
+        frontSide[i + 1] ? frontSide[i + 1] : frontSide[0],
+      ];
+    });
+
+    return {
+      backSide: coords,
+      frontSide,
+      asides,
+    };
+  }
+
+  drawByCoordinates(coords) {
+    this.ctx.beginPath();
+
     coords.forEach(([x, y]) => {
       this.ctx.lineTo(x, y);
     });
+
+    this.ctx.stroke();
+    this.ctx.closePath();
+    this.ctx.fill();
+  }
+
+  drawOneBuilding(coords) {
+    const { frontSide, asides } = this.getBuildingParts(coords);
+
+    //draw asides
+    this.ctx.fillStyle = this.colorHelper.arrToHsl(
+      this.colorHelper.darken(...this.color)
+    );
+    asides.forEach((rectCoords) => {
+      this.drawByCoordinates(rectCoords);
+    });
+
+    //draw front side
+    this.ctx.fillStyle = this.colorHelper.arrToHsl(this.color);
+    this.drawByCoordinates(frontSide);
   }
 
   addOffsetToCoords(buildingCoords, offset) {
@@ -42,40 +82,35 @@ export class BuildingDrawer {
     return result;
   }
 
-  getSideCount(rowIndex) {
+  getBuildingType(rowIndex) {
     if (rowIndex > this.rowCount / 3) {
       return Math.floor(Math.random() * 3 + 3); // [3; 5]
     }
     return Math.floor(Math.random() * 5 + 3); // [3; 7]
   }
 
-  drawBuildingsRow(rowIndex) {
-    this.ctx.beginPath();
-    let offsetX = 0;
+  generateRowBuildings(offsetX, rowIndex) {
+    const type = this.getBuildingType(rowIndex);
+    let buildingCoords = this.buildingGenerator.generateBuilding(type);
 
+    offsetX += this.getRandomOffsetX(rowIndex);
+    buildingCoords = this.addOffsetToCoords(buildingCoords, {
+      x: this.offset.x + offsetX,
+      y: this.offset.y,
+    });
+    offsetX += buildingCoords[buildingCoords.length - 1][0] - buildingCoords[0][0];
+    return {buildingCoords, offsetX};
+  }
+
+  drawBuildingsRow(rowIndex) {
+    this.ctx.strokeStyle = 'transparent';
+    let offsetX = 0;
     let buildingCoords;
 
-    while (offsetX < window.innerWidth) {
-      const sideCount = this.getSideCount(rowIndex);
-      buildingCoords = this.buildingGenerator.generateBuilding(sideCount);
-
-      offsetX += this.getRandomOffsetX(rowIndex);
-      buildingCoords = this.addOffsetToCoords(buildingCoords, {
-        x: this.offset.x + offsetX,
-        y: this.offset.y,
-      });
-      offsetX += buildingCoords[buildingCoords.length - 1][0] - buildingCoords[0][0];
-
-      this.ctx.lineTo(...buildingCoords);
+    while (offsetX + this.offset.x < window.innerWidth) {
+      ({ offsetX, buildingCoords } = this.generateRowBuildings(offsetX, rowIndex));
       this.drawOneBuilding(buildingCoords);
     }
-
-    this.ctx.strokeStyle = 'transparent';
-    this.ctx.stroke();
-    this.ctx.closePath();
-
-    this.ctx.fillStyle = this.colorHelper.arrToHsl(this.color);
-    this.ctx.fill();
   }
 
   drawCity() {

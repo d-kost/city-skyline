@@ -109,15 +109,19 @@ export class Building3SidesWide extends CommonBuilding {
   }
 }
 
-export class Building7Sides extends CommonBuilding {
-  static sideCount = 7;
+export class Building5SidesShort extends CommonBuilding {
+  static sideCount = 5;
 
   static getNextCoordinates(i, x0, y0) {
-    let y = i < 3 ? y0 - this.height : y0 + this.height;
+    let x = x0 + 35;
+    let y = i === this.sideCount - 1 ? this.startY : y0 - Math.floor(Math.random() * 30 + this.height);
+
+    if (i % 2 === 0) {
+      x = x0;
+    }
     if (i % 2 === 1) {
       y = y0;
     }
-    let x = x0 + 30;
     return [x, y];
   }
 }
