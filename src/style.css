@@ -1,4 +1,30 @@
-body {
+html, body {
   margin: 0;
   padding: 0;
+}
+
+canvas {
+  display: block;
+}
+
+.container {
+  position: relative;
+}
+
+.generate-btn {
+  position: absolute;
+  left: 46%;
+  bottom: 40px;
+  font: 15px 'Courier New', monospace;
+  font-weight: 600;
+  cursor: pointer;
+  border: 3px solid #e65549;
+  color: #e65549;
+  border-radius: 30px;
+  background-color: transparent;
+  padding: 15px 30px;
+}
+
+.generate-btn:hover {
+  background-color: #c4c4c46b;
 }
