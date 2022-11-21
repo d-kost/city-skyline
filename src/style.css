@@ -8,7 +8,20 @@ canvas {
 }
 
 .container {
+}
+
+.layers {
   position: relative;
+}
+
+#shadowsCanvas {
+  position: absolute;
+  top: 0;
+}
+
+#cityCanvas {
+  position: absolute;
+  top: 0;
 }
 
 .generate-btn {

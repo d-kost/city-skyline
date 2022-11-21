@@ -1,4 +1,5 @@
 import { ColorHelper } from './ColorHelper';
+import { drawByCoordinates } from './utils';
 
 export class BuildingDrawer {
   minWidth = 20;
@@ -46,18 +47,6 @@ export class BuildingDrawer {
     };
   }
 
-  drawByCoordinates(coords) {
-    this.ctx.beginPath();
-
-    coords.forEach(([x, y]) => {
-      this.ctx.lineTo(x, y);
-    });
-
-    this.ctx.stroke();
-    this.ctx.closePath();
-    this.ctx.fill();
-  }
-
   drawOneBuilding(coords) {
     const { frontSide, asides } = this.getBuildingParts(coords);
 
@@ -66,12 +55,12 @@ export class BuildingDrawer {
       this.colorHelper.darken(...this.color)
     );
     asides.forEach((rectCoords) => {
-      this.drawByCoordinates(rectCoords);
+      drawByCoordinates(this.ctx, rectCoords);
     });
 
     //draw front side
     this.ctx.fillStyle = this.colorHelper.arrToHsl(this.color);
-    this.drawByCoordinates(frontSide);
+    drawByCoordinates(this.ctx, frontSide);
   }
 
   addOffsetToCoords(buildingCoords, offset) {
