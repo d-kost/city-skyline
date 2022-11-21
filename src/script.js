@@ -1,22 +1,39 @@
 import { ShadowBuildingDrawer } from './ShadowBuildingDrawer';
-import { BuildingDrawer } from './BuildingDrawer';
 import { BuildingGenerator } from './BuildingGenerator';
 import Canvas from './Canvas';
+import { gradientBottom } from './utils';
 
-const generate = (ctx, shadowsCtx) => {
+let animationFrameId = 0;
+
+const startShadowsAnimation = (buildingDrawer, shadowCanvas) => {
+  let offset = 0;
+  const redrawShadows = () => {
+    shadowCanvas.ctx.clearRect(0, 0, shadowCanvas.width, shadowCanvas.height);
+    shadowCanvas.setCanvasBackground();
+    buildingDrawer.drawShadows(offset);
+    offset++;
+    // animationFrameId = requestAnimationFrame(redrawShadows);
+  }
+  animationFrameId = requestAnimationFrame(redrawShadows);
+}
+
+const generate = (cityCanvas, shadowsCanvas) => {
   const startPos = [10, 100];
   const buildingGenerator = new BuildingGenerator(...startPos);
-  const buildingDrawer = new ShadowBuildingDrawer(ctx, buildingGenerator);
-  buildingDrawer.setShadowCtx(shadowsCtx);
+  const buildingDrawer = new ShadowBuildingDrawer(cityCanvas.ctx, buildingGenerator);
+  buildingDrawer.setShadowCtx(shadowsCanvas.ctx);
   buildingDrawer.setInitialColor([231, 44, 74]);
+  buildingDrawer.setShadowColor(gradientBottom);
   buildingDrawer.drawCity();
+  
+  cancelAnimationFrame(animationFrameId);
+  startShadowsAnimation(buildingDrawer, shadowsCanvas);
 };
 
 const redraw = (canvas, shadowsCanvas) => {
   canvas.ctx.clearRect(0, 0, canvas.domCanvas.width, canvas.domCanvas.height);
   shadowsCanvas.ctx.clearRect(0, 0, canvas.domCanvas.width, canvas.domCanvas.height);
-  shadowsCanvas.setCanvasBackground();
-  generate(canvas.ctx, shadowsCanvas.ctx);
+  generate(canvas, shadowsCanvas);
 }
 
 const domContentLoaded = () => {

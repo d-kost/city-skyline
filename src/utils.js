@@ -1,3 +1,5 @@
+export const gradientBottom = 'hsl(5, 100%, 75%)';
+
 export const drawByCoordinates = (ctx, coords) => {
   ctx.beginPath();
 

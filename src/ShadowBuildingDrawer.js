@@ -8,22 +8,44 @@ export class ShadowBuildingDrawer extends BuildingDrawer {
     this.shadowCtx = ctx;
   }
 
+  setShadowColor(color) {
+    this.shadowColor = color;
+  }
+
+  saveBuildingShadow(coords) {
+    let y0 = 0;
+    const shadowCoords = coords.map(([x, y], i) => {
+      if (i === 0 || i === coords.length - 1) {
+        y0 = y;
+        return [x, y];
+      }
+      const diff = y0 - y;
+      return [x + 20, diff + y0];
+    });
+    this.shadowCoords.push(shadowCoords);
+  }
+
   drawOneBuilding(coords) {
     super.drawOneBuilding(coords);
+    this.saveBuildingShadow(coords);
+  }
 
-    const shadowCoords = coords.map(([x, y], i) => {
-      if (i === 0) {
+  setShadowOffset(coords, offset) {
+    return coords.map(([x, y], i) => {
+      if (i === 0 || i === coords.length - 1) {
         return [x, y];
       }
-      if (coords.length - 1 === i) {
-        return [x, y];
-      }
-      return [x + 20, y + 200];
+      return [x + offset, y];
     });
-    // this.shadowCtx.fillStyle = 'black';
-    drawByCoordinates(this.shadowCtx, shadowCoords);
-    this.shadowCoords.push(shadowCoords);
+  }
 
+  drawShadows(offset) {
+    this.shadowCtx.fillStyle = this.shadowColor;
+    this.shadowCtx.strokeStyle = 'transparent';
+    this.shadowCoords.forEach((shadowCoords) => {
+      const newCoords = this.setShadowOffset(shadowCoords, offset);
+      drawByCoordinates(this.shadowCtx, newCoords);
+    });
   }
 
 }

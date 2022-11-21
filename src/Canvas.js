@@ -1,3 +1,5 @@
+import { gradientBottom } from "./utils";
+
 export default class Canvas {
   constructor(id) {
     this.domCanvas = document.getElementById(id);
@@ -10,7 +12,7 @@ export default class Canvas {
     const grd = this.ctx.createLinearGradient(0, 0, 0, this.domCanvas.height);
     grd.addColorStop(0, '#80deea');
     grd.addColorStop(0.37, '#ffccbc');
-    grd.addColorStop(1, '#ff8a80');
+    grd.addColorStop(1, gradientBottom);
     this.ctx.fillStyle = grd;
     this.ctx.fillRect(0, 0, this.domCanvas.width, this.domCanvas.height);
   }
