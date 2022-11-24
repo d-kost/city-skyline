@@ -10,10 +10,10 @@ let animationFrameId = 0;
 const startShadowsAnimation = (buildingDrawer, shadowCanvas) => {
   let offset = 0;
   const sun = new Sun(shadowCanvas.ctx);
-  const daytime = new Daytime(shadowCanvas.width);
+  const daytime = new Daytime(shadowCanvas.domCanvas.width, shadowCanvas.domCanvas.height);
 
   const redrawShadows = () => {
-    shadowCanvas.ctx.clearRect(0, 0, shadowCanvas.width, shadowCanvas.height);
+    shadowCanvas.ctx.clearRect(0, 0, shadowCanvas.domCanvas.width, shadowCanvas.domCanvas.height);
     shadowCanvas.setCanvasBackground();
 
     daytime.setXPosition(offset);
@@ -21,7 +21,9 @@ const startShadowsAnimation = (buildingDrawer, shadowCanvas) => {
     sun.draw();
     buildingDrawer.drawShadows(offset);
     offset++;
-    // animationFrameId = requestAnimationFrame(redrawShadows);
+    if (offset < shadowCanvas.domCanvas.width) {
+      animationFrameId = requestAnimationFrame(redrawShadows);
+    }
   }
   animationFrameId = requestAnimationFrame(redrawShadows);
 }
@@ -30,6 +32,7 @@ const generate = (cityCanvas, shadowsCanvas) => {
   const startPos = [10, 100];
   const buildingGenerator = new BuildingGenerator(...startPos);
   const buildingDrawer = new ShadowBuildingDrawer(cityCanvas.ctx, buildingGenerator);
+  buildingDrawer.setOffset({ ...buildingDrawer.offset, y: cityCanvas.domCanvas.height / 2 });
   buildingDrawer.setShadowCtx(shadowsCanvas.ctx);
   buildingDrawer.setInitialColor([231, 44, 74]);
   buildingDrawer.setShadowColor(gradientBottom);
