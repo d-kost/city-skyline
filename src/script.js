@@ -2,6 +2,7 @@ import { ShadowBuildingDrawer } from './ShadowBuildingDrawer';
 import { BuildingGenerator } from './BuildingGenerator';
 import Canvas from './Canvas';
 import { gradientBottom } from './utils';
+import { Sun } from './Sun';
 
 let animationFrameId = 0;
 
@@ -10,6 +11,10 @@ const startShadowsAnimation = (buildingDrawer, shadowCanvas) => {
   const redrawShadows = () => {
     shadowCanvas.ctx.clearRect(0, 0, shadowCanvas.width, shadowCanvas.height);
     shadowCanvas.setCanvasBackground();
+
+    const sun = new Sun(shadowCanvas.ctx);
+    sun.setPosition(150, 100);
+    sun.draw();
     buildingDrawer.drawShadows(offset);
     offset++;
     // animationFrameId = requestAnimationFrame(redrawShadows);
