@@ -35,7 +35,7 @@ export class ShadowBuildingDrawer extends BuildingDrawer {
       if (i === 0 || i === coords.length - 1) {
         return [x, y];
       }
-      return [x - offset, y];
+      return [x + offset, y];
     });
   }
 

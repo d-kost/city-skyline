@@ -8,20 +8,24 @@ import { Daytime } from './Daytime';
 let animationFrameId = 0;
 
 const startCityAnimation = (buildingDrawer, shadowCanvas) => {
-  let offset = 0;
+  const width = shadowCanvas.domCanvas.width;
+  const height = shadowCanvas.domCanvas.height;
+
+  let xPosition = height > width ? 0 : 150;
   const sun = new Sun(shadowCanvas.ctx);
-  const daytime = new Daytime(shadowCanvas.domCanvas.width, shadowCanvas.domCanvas.height);
+  const daytime = new Daytime(width, height);
 
   const redrawShadows = () => {
-    shadowCanvas.ctx.clearRect(0, 0, shadowCanvas.domCanvas.width, shadowCanvas.domCanvas.height);
+    shadowCanvas.ctx.clearRect(0, 0, width, height);
     shadowCanvas.setCanvasBackground();
 
-    daytime.setXPosition(offset);
+    daytime.setXPosition(xPosition);
     sun.setPosition(...daytime.calculateSunPosition());
     sun.draw();
-    buildingDrawer.drawShadows(offset);
-    offset++;
-    if (offset < shadowCanvas.domCanvas.width) {
+    const shadowOffset = daytime.calculateShadowOffset();
+    buildingDrawer.drawShadows(shadowOffset);
+    xPosition++;
+    if (xPosition < shadowCanvas.domCanvas.width + 150) {
       animationFrameId = requestAnimationFrame(redrawShadows);
     }
   }
