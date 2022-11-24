@@ -7,7 +7,7 @@ import { Daytime } from './Daytime';
 
 let animationFrameId = 0;
 
-const startShadowsAnimation = (buildingDrawer, shadowCanvas) => {
+const startCityAnimation = (buildingDrawer, shadowCanvas) => {
   let offset = 0;
   const sun = new Sun(shadowCanvas.ctx);
   const daytime = new Daytime(shadowCanvas.domCanvas.width, shadowCanvas.domCanvas.height);
@@ -39,7 +39,7 @@ const generate = (cityCanvas, shadowsCanvas) => {
   buildingDrawer.drawCity();
   
   cancelAnimationFrame(animationFrameId);
-  startShadowsAnimation(buildingDrawer, shadowsCanvas);
+  startCityAnimation(buildingDrawer, shadowsCanvas);
 };
 
 const redraw = (canvas, shadowsCanvas) => {
