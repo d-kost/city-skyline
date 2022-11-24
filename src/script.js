@@ -1,19 +1,23 @@
-import { ShadowBuildingDrawer } from './ShadowBuildingDrawer';
-import { BuildingGenerator } from './BuildingGenerator';
+import { ShadowBuildingDrawer } from './buildings/ShadowBuildingDrawer';
+import { BuildingGenerator } from './buildings/BuildingGenerator';
 import Canvas from './Canvas';
 import { gradientBottom } from './utils';
 import { Sun } from './Sun';
+import { Daytime } from './Daytime';
 
 let animationFrameId = 0;
 
 const startShadowsAnimation = (buildingDrawer, shadowCanvas) => {
   let offset = 0;
+  const sun = new Sun(shadowCanvas.ctx);
+  const daytime = new Daytime(shadowCanvas.width);
+
   const redrawShadows = () => {
     shadowCanvas.ctx.clearRect(0, 0, shadowCanvas.width, shadowCanvas.height);
     shadowCanvas.setCanvasBackground();
 
-    const sun = new Sun(shadowCanvas.ctx);
-    sun.setPosition(150, 100);
+    daytime.setXPosition(offset);
+    sun.setPosition(...daytime.calculateSunPosition());
     sun.draw();
     buildingDrawer.drawShadows(offset);
     offset++;

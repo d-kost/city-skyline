@@ -1,5 +1,5 @@
-import { ColorHelper } from './ColorHelper';
-import { drawByCoordinates } from './utils';
+import { ColorHelper } from '../ColorHelper';
+import { drawByCoordinates } from '../utils';
 
 export class BuildingDrawer {
   minWidth = 20;

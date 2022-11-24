@@ -1,5 +1,5 @@
 import { BuildingDrawer } from './BuildingDrawer';
-import { drawByCoordinates } from './utils';
+import { drawByCoordinates } from '../utils';
 
 export class ShadowBuildingDrawer extends BuildingDrawer {
   shadowCoords = [];
@@ -35,7 +35,7 @@ export class ShadowBuildingDrawer extends BuildingDrawer {
       if (i === 0 || i === coords.length - 1) {
         return [x, y];
       }
-      return [x + offset, y];
+      return [x - offset, y];
     });
   }
 
