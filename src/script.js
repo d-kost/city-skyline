@@ -52,6 +52,14 @@ const redraw = (canvas, shadowsCanvas) => {
   generate(canvas, shadowsCanvas);
 }
 
+const setDebouncedResizeListener = (callback) => {
+  let timeout = false;
+  window.addEventListener('resize', () => {
+    clearTimeout(timeout);
+    timeout = setTimeout(callback, 250);
+  });
+}
+
 const domContentLoaded = () => {
   const shadowsCanvas = new Canvas('shadowsCanvas');
   
@@ -60,6 +68,12 @@ const domContentLoaded = () => {
 
   const generateBtn = document.querySelector('.generate-btn');
   generateBtn.addEventListener('click', () => redraw(cityCanvas, shadowsCanvas));
+
+  setDebouncedResizeListener(() => {
+    shadowsCanvas.updateSize();
+    cityCanvas.updateSize();
+    redraw(cityCanvas, shadowsCanvas);
+  });
 };
 
 document.addEventListener('DOMContentLoaded', domContentLoaded);
