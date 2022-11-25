@@ -1,0 +1,2 @@
+html,body{margin:0;padding:0}canvas{display:block}.layers{position:relative}#shadowsCanvas,#cityCanvas{position:absolute;top:0}.generate-btn{cursor:pointer;color:#e65549;background-color:transparent;border:3px solid #e65549;border-radius:30px;padding:15px 30px;font:600 15px Courier New,monospace;position:absolute;bottom:40px;left:50%;-webkit-transform:translate(-50%);transform:translate(-50%)}.generate-btn:hover{background-color:rgba(196,196,196,.42)}
+/*# sourceMappingURL=index.03630889.css.map */
